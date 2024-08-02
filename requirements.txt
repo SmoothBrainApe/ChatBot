@@ -1,6 +1,7 @@
 unstructured
 langchain
 langchain-ollama
+langchain-chroma
 langchain-community
 ollama
 chromadb
