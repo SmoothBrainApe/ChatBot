@@ -2,8 +2,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
+import os
 
-embed_model = 'snowflake-arctic-embed:335m'
+embed_model = 'snowflake-arctic-embed'
 
 # Load document from directory
 loader = DirectoryLoader('./Docs/', glob='**/*.txt')
@@ -26,9 +27,12 @@ text_splitter = RecursiveCharacterTextSplitter(
 texts = text_splitter.split_documents(documents=documents)
 
 # Create Vector Store
-vector_store = Chroma.from_documents(
-    documents=texts,
-    embedding=embeddings,
-    persist_directory='./chroma_db'
-)
-print('Vector Store created!')
+if os.path.exists('chroma_db/chroma.sqlite3'):
+    pass
+else:
+    vector_store = Chroma.from_documents(
+        documents=texts,
+        embedding=embeddings,
+        persist_directory='./chroma_db'
+    )
+    print('Vector Store created!')
